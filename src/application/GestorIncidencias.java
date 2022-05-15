@@ -6,6 +6,7 @@ package application;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import model.Contexto;
 
 /**
  *
@@ -13,8 +14,8 @@ import javax.swing.JOptionPane;
  */
 public class GestorIncidencias {
     
-    public void gestionarExcepcion(Exception excepcion) {
-    
+    public void gestionarExcepcion(Exception excepcion, Contexto contexto) {
+       
         int codigoError = 0;
         String mensajeError = "";
         
@@ -55,29 +56,29 @@ public class GestorIncidencias {
                             break; 
                   case 43: mensajeError = "Se ha producido un error al intentar consultar estadística de actividad";
                             break;               
-                  case 50: mensajeError = "Se ha producido un error al intentar insertar libro";
+                  case 50: mensajeError = "Se ha producido un error al intentar insertar vehículo";
                             break; 
-                  case 51: mensajeError = "Se ha producido un error al intentar eliminar libro";
+                  case 51: mensajeError = "Se ha producido un error al intentar eliminar vehículo";
                             break;  
-                  case 52: mensajeError = "Se ha producido un error al intentar actualizar un dato de libro";
+                  case 52: mensajeError = "Se ha producido un error al intentar actualizar un dato de vehículo";
                             break; 
-                  case 53: mensajeError = "Se ha producido un error al intentar actualizar datos de libro";
+                  case 53: mensajeError = "Se ha producido un error al intentar actualizar datos de vehículo";
                             break;                                                         
-                  case 54: mensajeError = "Se ha producido un error al intentar consultar por identificador de libro";
+                  case 54: mensajeError = "Se ha producido un error al intentar consultar por identificador de vehículo";
                             break; 
-                  case 55: mensajeError = "Se ha producido un error al intentar consultar listado de libros";
+                  case 55: mensajeError = "Se ha producido un error al intentar consultar listado de vehículos";
                             break;  
-                  case 56: mensajeError = "Se ha producido un error al intentar página de listado de libros";
+                  case 56: mensajeError = "Se ha producido un error al intentar página de listado de vehículos";
                             break; 
-                  case 57: mensajeError = "Se ha producido un error al intentar consultar número de libros registrados";
+                  case 57: mensajeError = "Se ha producido un error al intentar consultar número de vehículos registrados";
                             break;                            
-                  case 58: mensajeError = "Se ha producido un error al intentar consultar géneros";
+                  case 58: mensajeError = "Se ha producido un error al intentar consultar categorías";
                             break;     
                   case 60: mensajeError = "Se ha producido un error al intentar consultar por identificador de usuario";
                             break;
                   case 70: mensajeError = "No se puede generar el documento por ausencia de filas dados los límites establecidos";
                             break;  
-                  case 100: mensajeError = "Se ha producido una situación de error en la BD al intentar obtener valor de secuencia libros";      
+                  case 100: mensajeError = "Se ha producido una situación de error en la BD al intentar obtener valor de secuencia vehículos";      
                             break;                             
               }        
          }
@@ -91,10 +92,10 @@ public class GestorIncidencias {
                  mensajeError = excepcion.getMessage();                
              }
          }
-         
         
-        JOptionPane.showMessageDialog(null, mensajeError, "ERROR", JOptionPane.ERROR_MESSAGE);
-    }   
+        
+        JOptionPane.showMessageDialog(null, mensajeError, "ERROR", JOptionPane.ERROR_MESSAGE);  
       
+    }
     
 }
