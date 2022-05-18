@@ -57,7 +57,8 @@ public class Menu extends JFrame{
              for ( int k=0 ; k<opciones[i].length; k++)
                 { 
                    jMenuItems[i][k] = new JMenuItem(opciones[i][k]);
-                   jMenus[i].add(jMenuItems[i][k]);                                 
+                   jMenus[i].add(jMenuItems[i][k]);
+                   jMenuItems[i][k].addActionListener(controller); // adiciona los listeners en los items del menu
                 }
              jMenuBar.add(jMenus[i]);
            }
