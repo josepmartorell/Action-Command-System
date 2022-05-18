@@ -74,7 +74,8 @@ public class Controller extends WindowAdapter implements ActionListener {
               case "Conexion" :                                               
               case "ConexionEfectuada" :  
               case "Desconexion":
-              case "CierreVentana":   
+              case "CierreVentana":
+              case "Vista Formulario": 
                       centralizar("op_menu - "+componenteFuente);                
                       break;                   
               case "autenticacion" :                       
@@ -94,7 +95,8 @@ public class Controller extends WindowAdapter implements ActionListener {
                    switch (actionCommand)
                    {
                        case "op_menu - Conexion":   
-                       case "op_menu - ConexionEfectuada":     
+                       case "op_menu - ConexionEfectuada": 
+                       case "op_menu - Vista Formulario": 
                               actionCommand = actionCommand.substring(10);
                               menu.responderAController(actionCommand);                          
                               break;
