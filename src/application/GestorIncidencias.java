@@ -24,7 +24,7 @@ public class GestorIncidencias {
               GenericaExcepcion genericaExcepcion = (GenericaExcepcion)excepcion;
               codigoError = genericaExcepcion.getCodigoError();
               
-              String mensajesError[] = {"formato fecha erróneo", "año erróneo", "mes erróneo", "día erróneo", "número de páginas erróneo"};
+              String mensajesError[] = {"formato fecha erróneo", "año erróneo", "mes erróneo", "día erróneo", "kilometraje erróneo"};
      
               for (int i=1, contadorMensajes=0; i<=16; i*=2, contadorMensajes++)
               {  int codigoErrorFechaParcial = codigoError & i;
@@ -36,7 +36,7 @@ public class GestorIncidencias {
               {    
                   case 17: mensajeError = "No puede dejar ningún dato nulo";      
                             break;    
-                  case 18: mensajeError = "Debe seleccionar género";      
+                  case 18: mensajeError = "Debe seleccionar categoría";      
                             break;                               
                   case 20: mensajeError = "No se ha podido conectar: No existe un usuario con este identificador";      
                             break; 
