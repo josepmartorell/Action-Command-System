@@ -18,6 +18,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import model.Vehiculo;
 import persistence.BaseDatos;
 import persistence.VehiculosNegocio;
 
@@ -133,12 +134,45 @@ public class VistaFormulario extends PantallaOpcion{
         JScrollPane jScrollPaneGenero = new JScrollPane(jListCategorias);
         jScrollPaneGenero.setBounds(550, 290, 250, 115);
         add(jScrollPaneGenero);
+        //swap para las listas
+        componentesJPanel[12] = listSelectionModel;
+        componentesJPanel[5] = jListCategorias;
+ 
+        jTextFieldModelo.addCaretListener(controller);
+        jTextFieldFechaAlta.addCaretListener(controller);
+        jCheckBoxItv.addItemListener(controller);
+        jSLiderKilometrajeAlta.addChangeListener(controller);  
+        jButtonNuevoVehiculo.addActionListener(controller);
+        jButtonAplicarCambios.addActionListener(controller);
+        jButtonEliminar.addActionListener(controller);
 
         
     }
     
     
     public void inicializarPantalla() throws Exception {
+        
+        jTextFieldPlaca.setText("");
+        jTextFieldModelo.setText("");
+        jTextFieldFechaAlta.setText("");
+        jCheckBoxItv.setSelected(false);
+        jSLiderKilometrajeAlta.setValue(1);
+        jListCategorias.removeSelectionInterval(jListCategorias.getSelectedIndex(), jListCategorias.getSelectedIndex());
+             
+        if (jComboBoxVehiculos.getActionListeners().length  > 0)        
+            jComboBoxVehiculos.removeActionListener(controller);
+            
+        jComboBoxVehiculos.removeAllItems();
+        // añadimos la lista con los vehiculos obtenidos negociando la base de datos                     
+        List<Vehiculo> listaVehiculos = new VehiculosNegocio().consultarTodos((BaseDatos)controller.getRepositorio()[0], 2, null, null);
+        for (int i=0; i<listaVehiculos.size(); i++)
+        {
+           Vehiculo vehiculo = listaVehiculos.get(i);
+           jComboBoxVehiculos.addItem(vehiculo.getIdVehiculo()+"  -  "+vehiculo.getModelo());
+        }
+        jComboBoxVehiculos.addActionListener(controller);
+        
+        actualizaciones = 0;
         
     }    
     

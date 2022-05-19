@@ -43,7 +43,29 @@ public class VehiculosNegocio {
               }   
 
          return categorias;                                 
-     }  
+     }
+    
+    
+    public List<Vehiculo> consultarTodos(BaseDatos baseDatos, int criterioOrdenacion, String genero, LimitesListado limitesListado) throws Exception
+     { 
+        Connection connection=null;       
+        ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
+        List<Vehiculo> listaLibros = null;
+
+      try {
+            connection = conexionBaseDatos.abrirConexion(baseDatos);                              
+            listaLibros = new VehiculosDatos().consultarTodos(connection, criterioOrdenacion, genero, limitesListado);
+          } catch (Exception excepcion)
+              {  
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }   
+
+         return listaLibros;                                 
+     } 
 
 
 
