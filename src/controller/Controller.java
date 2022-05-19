@@ -12,7 +12,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.Contexto;
 import view.Menu;
 import view.PantallaOpcion;
@@ -21,7 +25,7 @@ import view.PantallaOpcion;
  *
  * @author jtech
  */
-public class Controller extends WindowAdapter implements ActionListener {
+public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener {
     
     private Object[] repositorio;
     private Menu menu;
@@ -86,6 +90,11 @@ public class Controller extends WindowAdapter implements ActionListener {
 
        
     }
+               // MÉTODO DE ListSelectionListener 
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+
+    }
     
     public void centralizar(String actionCommand) {
        
@@ -135,7 +144,10 @@ public class Controller extends WindowAdapter implements ActionListener {
                }  
         
         
-    } 
+    }
+    
+
+    
 
     public Object[] getRepositorio() {
         return repositorio;
@@ -160,17 +172,6 @@ public class Controller extends WindowAdapter implements ActionListener {
     public void setPantallaOpcion(PantallaOpcion pantallaOpcion) {
         this.pantallaOpcion = pantallaOpcion;
     }
-    
-    
-    
-    
-
-
-    
-
-    
-    
-
   
     
 }

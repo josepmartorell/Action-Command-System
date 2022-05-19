@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import persistence.BaseDatos;
+import persistence.VehiculosNegocio;
 
 /**
  *
@@ -27,14 +28,14 @@ import persistence.BaseDatos;
 public class VistaFormulario extends PantallaOpcion{
     
     private ListSelectionModel listSelectionModel;
-    private JComboBox jComboBoxVehiculos; //libros/vehiculos
-    private JLabel jLabelPlaca; // codigo/placa
+    private JComboBox jComboBoxVehiculos;
+    private JLabel jLabelPlaca;
     private JTextField jTextFieldPlaca;
-    private JLabel jLabelModelo;//titulo/modelo
+    private JLabel jLabelModelo;
     private JTextField jTextFieldModelo;
-    private JLabel jLabelFechaAlta;//fecha edicion/fecha alta
+    private JLabel jLabelFechaAlta;
     private JTextField jTextFieldFechaAlta;
-    private JCheckBox jCheckBoxItv;//premiado/itv
+    private JCheckBox jCheckBoxItv;
     private JLabel jLabelCategoria;
     private JList jListCategorias;
     private JSlider jSLiderKilometrajeAlta;
@@ -74,6 +75,7 @@ public class VistaFormulario extends PantallaOpcion{
         jTextFieldModelo = new JTextField();
         jTextFieldModelo.setBounds(600, 140, 400, 20);
         add(jTextFieldModelo);
+        componentesJPanel[2] = jTextFieldModelo;
  
         jLabelFechaAlta = new JLabel("Fecha alta (dd-mm-aaaa)");
         jLabelFechaAlta.setBounds(550, 180, 170, 20);
@@ -82,22 +84,25 @@ public class VistaFormulario extends PantallaOpcion{
         jTextFieldFechaAlta = new JTextField();
         jTextFieldFechaAlta.setBounds(730, 180, 80, 20);
         add(jTextFieldFechaAlta);
+        componentesJPanel[3] = jTextFieldFechaAlta;
         
         jCheckBoxItv = new JCheckBox("Itv");
         jCheckBoxItv.setBounds(550, 220, 150, 20);
         add(jCheckBoxItv);
+        componentesJPanel[4] = jCheckBoxItv;
         
         jLabelCategoria = new JLabel("Categoría");
-        jLabelCategoria.setBounds(550, 260, 50, 20);
+        jLabelCategoria.setBounds(550, 260, 80, 20);
         add(jLabelCategoria);               
         
-        jSLiderKilometrajeAlta = new JSlider(JSlider.HORIZONTAL,1,100000,300);
+        jSLiderKilometrajeAlta = new JSlider(JSlider.HORIZONTAL,1,200000,300);
         jSLiderKilometrajeAlta.setBounds(20, 430, 1070, 48);
         jSLiderKilometrajeAlta.setBorder(new TitledBorder("Kilometros alta"));
         jSLiderKilometrajeAlta.setPaintTicks(true);
         jSLiderKilometrajeAlta.setMajorTickSpacing(200);
         jSLiderKilometrajeAlta.setMinorTickSpacing(10);
         add(jSLiderKilometrajeAlta);
+        componentesJPanel[6] = jSLiderKilometrajeAlta;
         
         jLabelKilometrajeAlta = new JLabel();
         jLabelKilometrajeAlta.setBounds(1095, 450, 80, 20);
@@ -121,6 +126,14 @@ public class VistaFormulario extends PantallaOpcion{
     
     
     public void inicializarPostInstanciar(Controller controller) throws Exception {
+                
+        this.controller = controller;
+        //añadimos el JList con las categorias obtenidas del negocio
+        jListCategorias = new JList(new VehiculosNegocio().consultarCategorias((BaseDatos)controller.getRepositorio()[0]));
+        JScrollPane jScrollPaneGenero = new JScrollPane(jListCategorias);
+        jScrollPaneGenero.setBounds(550, 290, 250, 115);
+        add(jScrollPaneGenero);
+
         
     }
     
