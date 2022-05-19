@@ -8,6 +8,8 @@ import application.GenericaExcepcion;
 import application.GestorIncidencias;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
@@ -15,6 +17,10 @@ import java.net.UnknownHostException;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.Contexto;
@@ -25,7 +31,7 @@ import view.PantallaOpcion;
  *
  * @author jtech
  */
-public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener {
+public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener, CaretListener, ItemListener, ChangeListener {
     
     private Object[] repositorio;
     private Menu menu;
@@ -90,10 +96,25 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
 
        
     }
-               // MÉTODO DE ListSelectionListener 
+             // MÉTODO DE ListSelectionListener 
     @Override
-    public void valueChanged(ListSelectionEvent e) {
-
+    public void valueChanged(ListSelectionEvent lse) {
+        
+    }
+          // MÉTODO DE CaretListener 
+    @Override
+    public void caretUpdate(CaretEvent ce) {
+        
+    }
+          // MÉTODO DE ItemListener 
+    @Override
+    public void itemStateChanged(ItemEvent ie) {
+        
+    }
+          // MÉTODO DE ChangeListener  
+    @Override
+    public void stateChanged(ChangeEvent ce) {
+        
     }
     
     public void centralizar(String actionCommand) {
@@ -145,9 +166,7 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
         
         
     }
-    
-
-    
+     
 
     public Object[] getRepositorio() {
         return repositorio;
@@ -172,6 +191,7 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
     public void setPantallaOpcion(PantallaOpcion pantallaOpcion) {
         this.pantallaOpcion = pantallaOpcion;
     }
-  
+    
+
     
 }
