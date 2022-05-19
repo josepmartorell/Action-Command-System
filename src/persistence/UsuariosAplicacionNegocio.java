@@ -12,7 +12,7 @@ import model.Contexto;
  *
  * @author jtech
  */
-public class UsuariosBibliotecaNegocio {
+public class UsuariosAplicacionNegocio {
     
         public Contexto autenticar(BaseDatos baseDatos, Contexto usuarioIntroducido) throws Exception
     {
@@ -21,7 +21,7 @@ public class UsuariosBibliotecaNegocio {
             ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();      
       try {         
             connection = conexionBaseDatos.abrirConexion(baseDatos);  
-            usuarioAutenticado = new UsuariosBibliotecaDatos().buscarPorIdUsuario(connection, usuarioIntroducido);
+            usuarioAutenticado = new UsuariosAplicacionDatos().buscarPorIdUsuario(connection, usuarioIntroducido);
             if (usuarioAutenticado == null)
                    throw new GenericaExcepcion(20);      
 

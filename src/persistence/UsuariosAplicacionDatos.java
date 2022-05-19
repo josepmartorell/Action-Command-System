@@ -15,7 +15,7 @@ import model.Contexto;
  *
  * @author jtech
  */
-public class UsuariosBibliotecaDatos {
+public class UsuariosAplicacionDatos {
     
         public Contexto buscarPorIdUsuario(Connection connection, Contexto contexto) throws Exception
     {

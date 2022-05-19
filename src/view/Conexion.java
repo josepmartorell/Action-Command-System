@@ -13,7 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import model.Contexto;
 import persistence.BaseDatos;
-import persistence.UsuariosBibliotecaNegocio;
+import persistence.UsuariosAplicacionNegocio;
 
 /**
  *
@@ -67,7 +67,7 @@ public class Conexion extends PantallaOpcion {
           {   
                case "autenticacion" : 
                       Contexto contexto = new Contexto(jTextFieldUsuario.getText(), new String(jPasswordFieldPassword.getPassword()), obtenerIP());                         
-                      new UsuariosBibliotecaNegocio().autenticar((BaseDatos)controller.getRepositorio()[0], contexto); 
+                      new UsuariosAplicacionNegocio().autenticar((BaseDatos)controller.getRepositorio()[0], contexto); 
                       controller.setUsuarioAutenticado(contexto);
                       InvocacionAutomaticaMenu invocacionAutomaticaMenu = new InvocacionAutomaticaMenu();  
                       invocacionAutomaticaMenu.addEventoOpcionMenuListener(controller);
