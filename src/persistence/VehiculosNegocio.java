@@ -50,11 +50,11 @@ public class VehiculosNegocio {
      { 
         Connection connection=null;       
         ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
-        List<Vehiculo> listaLibros = null;
+        List<Vehiculo> listaVehiculos = null;
 
       try {
             connection = conexionBaseDatos.abrirConexion(baseDatos);                              
-            listaLibros = new VehiculosDatos().consultarTodos(connection, criterioOrdenacion, genero, limitesListado);
+            listaVehiculos = new VehiculosDatos().consultarTodos(connection, criterioOrdenacion, genero, limitesListado);
           } catch (Exception excepcion)
               {  
                 throw excepcion; 
@@ -64,8 +64,86 @@ public class VehiculosNegocio {
                  conexionBaseDatos.cerrarConexion(connection);         
               }   
 
-         return listaLibros;                                 
-     } 
+         return listaVehiculos;                                 
+     }
+    
+    
+    public void eliminar(BaseDatos baseDatos, Vehiculo vehiculo) throws Exception{
+            Connection connection = null;
+            ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
+      try {         
+            connection = conexionBaseDatos.abrirConexion(baseDatos);  
+            new VehiculosDatos().eliminar(connection, vehiculo);
+          } catch (Exception excepcion)
+              { 
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }                                
+        } 
+    
+    
+    public Vehiculo consultarPorIdVehiculo(BaseDatos baseDatos, Vehiculo vehiculo) throws Exception
+    {
+            Connection connection = null;
+            Vehiculo vehiculoObtenido = null;
+            ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();      
+      try {         
+            connection = conexionBaseDatos.abrirConexion(baseDatos);  
+            vehiculoObtenido = new VehiculosDatos().consultarPorIdVehiculo(connection, vehiculo);
+          } catch (Exception excepcion)
+              { 
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }     
+
+        return vehiculoObtenido;
+    } 
+    
+    
+    public String insertar(BaseDatos baseDatos, Vehiculo vehiculo) throws Exception{
+            Connection connection = null;
+            ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
+      try {         
+            connection = conexionBaseDatos.abrirConexion(baseDatos); 
+            //vehiculo.setIdVehiculo(new ReparacionesSecuencia().consultarValorSecuencia(connection, baseDatos));
+            new VehiculosDatos().insertar(connection, vehiculo);
+          } catch (Exception excepcion)
+              { 
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }    
+
+      return vehiculo.getIdVehiculo();
+    }
+    
+    /*actualizar utiliza de la clase vehiculosDatos no solo el metodo actualizar, sino el metodo actualizarColumna, es decir todos los metodos de datos sql relacionados con la actualización*/
+    public void actualizar(BaseDatos baseDatos, Vehiculo vehiculo, int actualizaciones) throws Exception{
+            Connection connection = null;
+            ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
+      try {         
+            connection = conexionBaseDatos.abrirConexion(baseDatos); 
+            if (actualizaciones == -1)
+                  new VehiculosDatos().actualizarColumna(connection, vehiculo);
+               else
+                  new VehiculosDatos().actualizar(connection, vehiculo, actualizaciones);
+          } catch (Exception excepcion)
+              { 
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }                                
+        }  
 
 
 

@@ -134,10 +134,15 @@ public class VistaFormulario extends PantallaOpcion{
         JScrollPane jScrollPaneGenero = new JScrollPane(jListCategorias);
         jScrollPaneGenero.setBounds(550, 290, 250, 115);
         add(jScrollPaneGenero);
-        //swap para las listas
+        //añadimos listeners para la cajetilla de categorias y configuramos selección simple
+        jListCategorias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listSelectionModel = jListCategorias.getSelectionModel();
+        listSelectionModel.addListSelectionListener(controller);
+        /*almacenamos en la posiciones 12 y 5 del swap listSelectionModel que a su vez almacena el list categorias con el listener incorporado y jlistcategorias respectivamente*/
         componentesJPanel[12] = listSelectionModel;
         componentesJPanel[5] = jListCategorias;
  
+        jTextFieldPlaca.addCaretListener(controller);
         jTextFieldModelo.addCaretListener(controller);
         jTextFieldFechaAlta.addCaretListener(controller);
         jCheckBoxItv.addItemListener(controller);
@@ -148,6 +153,84 @@ public class VistaFormulario extends PantallaOpcion{
 
         
     }
+    
+    
+    public void responderAController(String actionCommand) throws Exception {
+        Vehiculo vehiculo;
+        
+        switch(actionCommand)
+        {   
+             case "comboVehiculos" :                  
+                    visualizarVehiculoSeleccionado(jComboBoxVehiculos.getSelectedItem().toString().substring(0, 7));                         
+                    actualizaciones = 0;
+                    break;     
+             case "nuevoVehiculo" :
+                    inicializarPantalla();
+                    break;           
+             case "aplicarCambios" :                                                                 
+                    Filtros.filtrarDatosNulos( new String[]{ jTextFieldModelo.getText(),
+                                                             jTextFieldFechaAlta.getText(),
+                                                             jTextFieldPlaca.getText()
+                                                           }                         
+                                              );
+                    Filtros.filtrarFecha(jTextFieldFechaAlta.getText());
+                    // Filtros.filtrarKilometrajeAlta(jSLiderKilometrajeAlta.getValue());    // Innecesario porque el JSlider tiene el rango de valores limitado      
+                    Filtros.filtrarSeleccionJList((jListCategorias));
+                    vehiculo = new Vehiculo();
+                    vehiculo.setIdVehiculo(jTextFieldPlaca.getText());
+                    vehiculo.setModelo(jTextFieldModelo.getText());
+                    vehiculo.setCategoria(((String)(jListCategorias.getSelectedValue())).substring(0, 1));
+                    vehiculo.setFechaAlta(java.sql.Date.valueOf(jTextFieldFechaAlta.getText().substring(6, 10) +"-"+
+                                                                jTextFieldFechaAlta.getText().substring(3, 5) +"-"+
+                                                                jTextFieldFechaAlta.getText().substring(0, 2)
+                                                               ));
+                    vehiculo.setKilometrajeAlta(jSLiderKilometrajeAlta.getValue());
+                    vehiculo.setItv(jCheckBoxItv.isSelected());
+                       
+                    if (jTextFieldPlaca.getText().compareTo("") != 0)    
+                       { 
+                          new VehiculosNegocio().insertar((BaseDatos)controller.getRepositorio()[0], vehiculo);   
+                       }
+                      else
+                       { 
+                          if (actualizaciones > 0)
+                          {
+                             vehiculo.setIdVehiculo(jTextFieldPlaca.getText());
+                             new VehiculosNegocio().actualizar((BaseDatos)controller.getRepositorio()[0], vehiculo, actualizaciones);
+                          }
+                       }    
+                    inicializarPantalla();                                 
+                    break; 
+             case "eliminarVehiculo" :
+                    if (jTextFieldPlaca.getText().compareTo("") != 0)    
+                     {  
+                       vehiculo = new Vehiculo();
+                       vehiculo.setIdVehiculo(jTextFieldPlaca.getText());
+                       new VehiculosNegocio().eliminar((BaseDatos)controller.getRepositorio()[0], vehiculo);    
+                       inicializarPantalla();
+                     }                                                           
+                    break;  
+             case "actualizadoModelo" :
+                    actualizaciones|=1;
+                    break;    
+             case "actualizadoCategoria" :
+                    actualizaciones|=2;
+                    break;                        
+             case "actualizadoFechaAlta" :
+                    actualizaciones|=4;
+                    break;         
+             case "actualizadoKilometrajeAlta" :
+                    actualizaciones|=8;
+                    jLabelKilometrajeAlta.setText(Integer.toString(jSLiderKilometrajeAlta.getValue())+"  kilómetros");
+                    break;                    
+             case "actualizadoItv" :
+                    actualizaciones|=16;
+                    break;                   
+        }   
+        
+        System.out.println("Valor acumulado en actualizaciones :  "+actualizaciones);
+
+    } 
     
     
     public void inicializarPantalla() throws Exception {
@@ -175,16 +258,22 @@ public class VistaFormulario extends PantallaOpcion{
         actualizaciones = 0;
         
     }    
-    
-    
-    public void responderAController(String actionCommand) throws Exception {
-
-    }  
-    
+       
     
     private void visualizarVehiculoSeleccionado(String idVehiculo) throws Exception {
+        
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setIdVehiculo(idVehiculo);
+        Vehiculo vehiculoObtenido = new VehiculosNegocio().consultarPorIdVehiculo((BaseDatos)controller.getRepositorio()[0], vehiculo);
+        jTextFieldPlaca.setText(vehiculoObtenido.getIdVehiculo());
+        jTextFieldModelo.setText(vehiculoObtenido.getModelo());
+        jTextFieldFechaAlta.setText(new SimpleDateFormat("dd-MM-yyyy").format(vehiculoObtenido.getFechaAlta()));               
+        jCheckBoxItv.setSelected(vehiculoObtenido.isItv());
+        jListCategorias.setSelectedValue(vehiculoObtenido.getCategoria()+"  -  "+vehiculoObtenido.getDescripcion(), true);   
+        jSLiderKilometrajeAlta.setValue(vehiculoObtenido.getKilometrajeAlta());
+    } 
 
-    }  
+      
 
 
     
