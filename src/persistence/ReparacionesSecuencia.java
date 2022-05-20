@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author jtech
  */
-public class VehiculosSecuencia {
+public class ReparacionesSecuencia {
         public String consultarValorSecuencia(Connection connection, BaseDatos baseDatos) throws Exception
     {
         String valorSecuencia = null;
@@ -27,7 +27,7 @@ public class VehiculosSecuencia {
         {
             case "Oracle": sql = "SELECT REPLACE(TO_CHAR(secuencia_libros.NEXTVAL,'09999'),' ') FROM DUAL";
                            break;
-            case "MySQL":  sql = "SELECT LPAD(FORMAT(secuencia_next_valor(\"secuencia_libros\"),0),5,'0')"; 
+            case "MySQL":  sql = "SELECT LPAD(FORMAT(secuencia_next_valor(\"secuencia_reparaciones\"),0),5,'0')"; 
                            break;                       
         }           
 

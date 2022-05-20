@@ -137,15 +137,15 @@ DELIMITER ;
 
 -- -----------------------------------------------------------------------------------------------------------------------------
 
--- CALL elimina_secuencia("secuencia_libros");
+-- CALL elimina_secuencia("secuencia_reparaciones");
 
 CALL crea_secuencia("secuencia_reparaciones", 1, 1);
 
--- CALL secuencia_set_valor("secuencia_libros", 100);
+-- CALL secuencia_set_valor("secuencia_reparaciones", 100);
 
--- CALL secuencia_set_incremento("secuencia_libros", 5);
+-- CALL secuencia_set_incremento("secuencia_reparaciones", 5);
 
--- SELECT secuencia_next_valor("secuencia_libros");
+-- SELECT secuencia_next_valor("secuencia_reparaciones");
 
 -- -----------------------------------------------------------------------------------------------------------------------------
 
