@@ -131,14 +131,13 @@ public class VistaFormulario extends PantallaOpcion{
         this.controller = controller;
         //añadimos el JList con las categorias obtenidas del negocio
         jListCategorias = new JList(new VehiculosNegocio().consultarCategorias((BaseDatos)controller.getRepositorio()[0]));
-        JScrollPane jScrollPaneGenero = new JScrollPane(jListCategorias);
-        jScrollPaneGenero.setBounds(550, 290, 250, 115);
-        add(jScrollPaneGenero);
+        JScrollPane jScrollPaneCategoria = new JScrollPane(jListCategorias);
+        jScrollPaneCategoria.setBounds(550, 290, 250, 115);
+        add(jScrollPaneCategoria);
         //añadimos listeners para la cajetilla de categorias y configuramos selección simple
         jListCategorias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listSelectionModel = jListCategorias.getSelectionModel();
         listSelectionModel.addListSelectionListener(controller);
-        /*almacenamos en la posiciones 12 y 5 del swap listSelectionModel que a su vez almacena el list categorias con el listener incorporado y jlistcategorias respectivamente*/
         componentesJPanel[12] = listSelectionModel;
         componentesJPanel[5] = jListCategorias;
  
