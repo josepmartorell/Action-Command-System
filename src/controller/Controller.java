@@ -16,6 +16,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -100,46 +102,35 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
 
        
     }
-             // MÉTODO DE ListSelectionListener 
+    
+         // MÉTODO DE ChangeListener  
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (e.getSource() == (pantallaOpcion.getComponentesJPanel(6)))
+        { 
+           centralizar("actualizadoKilometrajeAlta");                           
+        }
+    
+      System.out.println("Dato actualizado :  "+((JSlider)pantallaOpcion.getComponentesJPanel(6)).getValue());
+        
+    }
+    
+          // MÉTODO DE ListSelectionListener 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         
-               //   Cuando se efectúa botón del ratón sobre una fila se intercepta el evento. Y cuando se suelta dicho botón, vuelve a interceptarse el evento.
-       ListSelectionModel listSelectionModel = (ListSelectionModel)e.getSource(); 
-     
-      switch(pantallaOpcion.getClass().getName())
-       {  case "view.VistaUnicaTabla": 
-          case "view.VistaPaginadaTabla": 
-                  if (!(e.getValueIsAdjusting()))
-                  {
-                      pantallaOpcion.setComponentesJPanel(listSelectionModel.getMinSelectionIndex(), 2);  // Modifica valor de fila seleccionada en JTable  
-                      System.out.println("fila seleccionada en JTable  "+pantallaOpcion.getComponentesJPanel(2));
-                  }
-                  break;        
-          case "view.VistaFormulario": 
-                  if (e.getSource() == (pantallaOpcion.getComponentesJPanel(12)))
-                    { 
-                       centralizar("actualizadoCategoria");               
-                    }             
-                  System.out.println("fila seleccionada en JList  "+listSelectionModel.getMinSelectionIndex());
-                  System.out.println("dato actualizado  "+((String)((JList)pantallaOpcion.getComponentesJPanel(5)).getSelectedValue()));       
-                  break;                          
-       }
         
     }
           // MÉTODO DE CaretListener 
     @Override
-    public void caretUpdate(CaretEvent ce) {
+    public void caretUpdate(CaretEvent e) {
         
     }
+    
+
           // MÉTODO DE ItemListener 
     @Override
     public void itemStateChanged(ItemEvent ie) {
-        
-    }
-          // MÉTODO DE ChangeListener  
-    @Override
-    public void stateChanged(ChangeEvent ce) {
         
     }
     
