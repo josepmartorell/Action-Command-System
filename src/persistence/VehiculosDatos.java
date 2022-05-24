@@ -354,7 +354,31 @@ public class VehiculosDatos {
             {
                 if (preparedStatement != null) preparedStatement.close();
             }    
-    }     
+    }
+    
+    public Integer consultarNumeroFilas(Connection connection) throws Exception
+    {
+        Integer numFilas = null;
+        ResultSet resultSet = null;
+        Statement statement = null; 
+        String sql = "SELECT COUNT(*) FROM vehiculos";
+
+        try {
+                statement = connection.createStatement(); 
+                resultSet = statement.executeQuery(sql);
+                if (resultSet.next()) {
+                   numFilas = resultSet.getInt(1);          
+                }   
+            } catch (SQLException excepcion) {
+                throw new GenericaExcepcion(57);
+            } finally
+            {
+                if (resultSet != null) resultSet.close(); 
+                if (statement != null) statement.close();
+            }
+
+        return numFilas;
+    }
     
 
 

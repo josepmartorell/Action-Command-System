@@ -25,6 +25,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import model.Contexto;
 import view.Menu;
 import view.PantallaOpcion;
@@ -33,7 +35,7 @@ import view.PantallaOpcion;
  *
  * @author jtech
  */
-public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener, CaretListener, ItemListener, ChangeListener {
+public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener, CaretListener, ItemListener, ChangeListener, TableModelListener {
     
     private Object[] repositorio;
     private Menu menu;
@@ -87,7 +89,8 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
               case "ConexionEfectuada" :  
               case "Desconexion":
               case "CierreVentana":
-              case "Vista Formulario": 
+              case "Vista Formulario":
+              case "Vista Unica Tabla":
                       centralizar("op_menu - "+componenteFuente);                
                       break;                   
               case "autenticacion" :
@@ -118,7 +121,39 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
           // MÉTODO DE ListSelectionListener 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+               //   Cuando se efectúa botón del ratón sobre una fila se intercepta el evento. Y cuando se suelta dicho botón, vuelve a interceptarse el evento.
+       ListSelectionModel listSelectionModel = (ListSelectionModel)e.getSource(); 
+     
+      switch(pantallaOpcion.getClass().getName())
+       {  case "view.VistaUnicaTabla": 
+          case "view.VistaPaginadaTabla": 
+                  if (!(e.getValueIsAdjusting()))
+                  {
+                      pantallaOpcion.setComponentesJPanel(listSelectionModel.getMinSelectionIndex(), 2);  // Modifica valor de fila seleccionada en JTable  
+                      System.out.println("fila seleccionada en JTable  "+pantallaOpcion.getComponentesJPanel(2));
+                  }
+                  break;        
+          case "view.VistaFormulario": 
+                  if (e.getSource() == (pantallaOpcion.getComponentesJPanel(12)))
+                    { 
+                       centralizar("actualizadoCategoria");               
+                    }             
+                  System.out.println("fila seleccionada en JList  "+listSelectionModel.getMinSelectionIndex());
+                  System.out.println("dato actualizado  "+((String)((JList)pantallaOpcion.getComponentesJPanel(5)).getSelectedValue()));       
+                  break;                          
+       }
         
+        
+    }
+               // MÉTODO DE TableModelListener 
+        @Override
+    public void tableChanged(TableModelEvent e) {
+           //   La invocación a estos métodos es efectiva cuando en el método setValueAt(Object valor,int fila, int columna )  
+           //   de ModeloDatos se activa el evento mediante la invocación a fireTableCellUpdated(fila, columna);
+           pantallaOpcion.setComponentesJPanel(e.getFirstRow(), 13);    //  Fila de celda actualizada en JTable. 
+           pantallaOpcion.setComponentesJPanel(e.getColumn(), 14);      //  Columna de celda actualizada en JTable. 
+           
+           centralizar("actualizadaColumnaJTable"); 
         
     }
           // MÉTODO DE CaretListener 
@@ -143,7 +178,8 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
                    {
                        case "op_menu - Conexion":   
                        case "op_menu - ConexionEfectuada": 
-                       case "op_menu - Vista Formulario": 
+                       case "op_menu - Vista Formulario":
+                       case "op_menu - Vista Unica Tabla":
                               actionCommand = actionCommand.substring(10);
                               menu.responderAController(actionCommand);                          
                               break;
@@ -208,7 +244,6 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
     public void setPantallaOpcion(PantallaOpcion pantallaOpcion) {
         this.pantallaOpcion = pantallaOpcion;
     }
-    
 
-    
+ 
 }

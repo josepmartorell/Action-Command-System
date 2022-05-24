@@ -111,7 +111,6 @@ public class VehiculosNegocio {
             ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
       try {         
             connection = conexionBaseDatos.abrirConexion(baseDatos); 
-            //vehiculo.setIdVehiculo(new ReparacionesSecuencia().consultarValorSecuencia(connection, baseDatos));
             new VehiculosDatos().insertar(connection, vehiculo);
           } catch (Exception excepcion)
               { 
@@ -143,7 +142,28 @@ public class VehiculosNegocio {
               {
                  conexionBaseDatos.cerrarConexion(connection);         
               }                                
-        }  
+        }
+    
+    public Integer consultarNumeroFilas(BaseDatos baseDatos) throws Exception
+     {
+        Connection connection=null;       
+        ConexionBaseDatos conexionBaseDatos = new ConexionBaseDatos();
+        Integer numFilas = null;
+
+      try {
+            connection = conexionBaseDatos.abrirConexion(baseDatos);                           
+            numFilas = new VehiculosDatos().consultarNumeroFilas(connection);
+          } catch (Exception excepcion)
+              {  
+                throw excepcion; 
+              }   
+            finally
+              {
+                 conexionBaseDatos.cerrarConexion(connection);         
+              }   
+
+         return numFilas;                                 
+     }
 
 
 
