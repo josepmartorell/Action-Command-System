@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import persistence.BaseDatos;
 import persistence.VehiculosNegocio;
+import model.Vehiculo;
 
 /**
  *
@@ -171,7 +172,7 @@ public class VistaUnicaTabla extends PantallaOpcion {
     @Override
     public void inicializarPantalla() throws Exception {      
        activarDesactivarJButtonInsercionFila(new boolean[]{true, false, false, true}); 
-       modeloDatos.cargar(new VehiculosNegocio().consultarTodos((BaseDatos)controller.getRepositorio()[0], ((Integer)componentesJPanel[10]).intValue(), null, null));   
+       modeloDatos.cargar(new VehiculosNegocio().consultarTodos((BaseDatos)controller.getRepositorio()[0], ((Integer)componentesJPanel[10]), null, null));   
     }    
 
    
@@ -183,8 +184,93 @@ public class VistaUnicaTabla extends PantallaOpcion {
 
     @Override
     public void responderAController(String actionCommand) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.responderAController"); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Vehiculo vehiculo;
+        
+        switch(actionCommand)
+        {   
+             case "reordenar" :       
+                    inicializarPantalla();
+                    break;     
+             case "insertarFila" :
+                    modeloDatos.insertarFila();
+                    listSelectionModel.setSelectionInterval((modeloDatos.getDatos().length)-1, (modeloDatos.getDatos().length)-1);
+                    componentesJPanel[2] = (modeloDatos.getDatos().length)-1;   // Modifica valor de fila seleccionada en JTable 
+                    filaAInsertarJTable = (modeloDatos.getDatos().length)-1;    
+                    activarDesactivarJButtonInsercionFila(new boolean[]{false, true, true, false}); 
+                    jLabelInformaFilaInsertada.setText("Fila insertada al final de la tabla");
+                    jLabelInformaGuardarFilaInsertada.setText("Antes de pulsar el botón Guardar situe el cursor en columna Código de la fila");                    
+                    break;           
+             case "cancelarInsercionFila" :                                                                 
+                    modeloDatos.eliminarFilaInsertada();        
+                    listSelectionModel.removeSelectionInterval(((Integer)componentesJPanel[2]), ((Integer)componentesJPanel[2]));
+                    componentesJPanel[2] = -1;                        // Modifica valor de fila seleccionada en JTable
+                    filaAInsertarJTable = -1;                                       
+                    activarDesactivarJButtonInsercionFila(new boolean[]{true, false, false, true});
+                    jLabelInformaFilaInsertada.setText("                                     ");
+                    jLabelInformaGuardarFilaInsertada.setText("                                                                              ");                                       
+                    break; 
+             case "guardarFilaInsertada" :                          
+                    Filtros.filtrarDatosNulos( new String[]{ (String)(modeloDatos.getDatos()[filaAInsertarJTable][1]),
+                                                             (String)(modeloDatos.getDatos()[filaAInsertarJTable][2]),
+                                                             (String)(modeloDatos.getDatos()[filaAInsertarJTable][3])
+                                                            }                         
+                                             );
+                    Filtros.filtrarFecha((String) modeloDatos.getDatos()[filaAInsertarJTable][3]);
+                    Filtros.filtrarKilometrajeVehiculo(((Integer)modeloDatos.getDatos()[filaAInsertarJTable][4]));                         
+                    vehiculo = new Vehiculo();
+                    vehiculo.setIdVehiculo((String)(modeloDatos.getDatos()[filaAInsertarJTable][0])); // se omite en objetos de codificacion autoincremental
+                    vehiculo.setModelo((String)(modeloDatos.getDatos()[filaAInsertarJTable][1]));
+                    vehiculo.setCategoria(((String)(modeloDatos.getDatos()[filaAInsertarJTable][2])).substring(0, 1));
+                    vehiculo.setFechaAlta(java.sql.Date.valueOf(((String)(modeloDatos.getDatos()[filaAInsertarJTable][3])).substring(6, 10) +"-"+
+                                                                 ((String)(modeloDatos.getDatos()[filaAInsertarJTable][3])).substring(3, 5) +"-"+
+                                                                 ((String)(modeloDatos.getDatos()[filaAInsertarJTable][3])).substring(0, 2)
+                                                               ));
+                    vehiculo.setKilometrajeAlta(((Integer)(modeloDatos.getDatos()[filaAInsertarJTable][4])));
+                    vehiculo.setItv(((Boolean)(modeloDatos.getDatos()[filaAInsertarJTable][5])));                                     
+                    new VehiculosNegocio().insertar((BaseDatos)controller.getRepositorio()[0], vehiculo);   
+                    inicializarPantalla();
+                    listSelectionModel.removeSelectionInterval(((Integer)componentesJPanel[2]), ((Integer)componentesJPanel[2]));                          
+                    componentesJPanel[2] = -1;                        // Modifica valor de fila seleccionada en JTable
+                    filaAInsertarJTable = -1;                                                      
+                    activarDesactivarJButtonInsercionFila(new boolean[]{true, false, false, true});  
+                    jLabelInformaFilaInsertada.setText("                                     ");
+                    jLabelInformaGuardarFilaInsertada.setText("                                                                              ");                                                                                                                  
+                    break;  
+             case "eliminarFilaSeleccionada" :
+                    if (((Integer)componentesJPanel[2]) != -1)    
+                    {  
+                        vehiculo = new Vehiculo();
+                        vehiculo.setIdVehiculo((String)modeloDatos.getDatos()[((Integer)componentesJPanel[2])][0]);
+                        new VehiculosNegocio().eliminar((BaseDatos)controller.getRepositorio()[0], vehiculo);
+                        inicializarPantalla();
+                        listSelectionModel.removeSelectionInterval(((Integer)componentesJPanel[2]), ((Integer)componentesJPanel[2]));                                                             
+                        componentesJPanel[2] = -1;
+                    }
+                    break;      
+             case "actualizadaColumnaJTable" :System.out.println("vamos al filtro");
+                    if (((Integer)componentesJPanel[14]) == 3)
+                       Filtros.filtrarFecha((String) modeloDatos.getDatos()[((Integer)componentesJPanel[13])][((Integer)componentesJPanel[14])]);
+
+                    if (((Integer)componentesJPanel[14]) == 4)
+                       Filtros.filtrarKilometrajeVehiculo(((Integer)modeloDatos.getDatos()[((Integer)componentesJPanel[13])][((Integer)componentesJPanel[14])]));
+                    
+                    if (((String)modeloDatos.getDatos()[((Integer)componentesJPanel[13])][0]).compareTo("") != 0)
+                    {
+                        vehiculo = new Vehiculo();
+                        vehiculo.setIdVehiculo((String)modeloDatos.getDatos()[((Integer)componentesJPanel[13])][0]);
+                        
+                        if (((Integer)componentesJPanel[14]) == 2)
+                             vehiculo.setDatoActualizado(((String)modeloDatos.getDatos()[((Integer)componentesJPanel[13])][((Integer)componentesJPanel[14])]).substring(0, 1));
+                          else
+                             vehiculo.setDatoActualizado(modeloDatos.getDatos()[((Integer)componentesJPanel[13])][((Integer)componentesJPanel[14])]);
+                        vehiculo.setColumnaActualizada(((Integer)componentesJPanel[14]));
+                                  
+                        new VehiculosNegocio().actualizar((BaseDatos)controller.getRepositorio()[0], vehiculo, -1);       
+                    }
+                    break;                             
+        }        
     }
+   
 
 
     

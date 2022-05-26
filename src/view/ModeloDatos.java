@@ -166,7 +166,7 @@ public class ModeloDatos extends AbstractTableModel {
         boolean editable = false;
 
         switch(controller.getPantallaOpcion().getClass().getName())
-          {  case "view.VistaUnicaTabla": if (columna >0)
+          {  case "view.VistaUnicaTabla": if (columna >=0) // con primer campo autoincremental sería >0 para impedir su edición 
                                                       editable = true;
                      break;
              case "view.VistaPaginadaTabla": if (fila < numeroFilasRecibidas  &&  columna >0)
