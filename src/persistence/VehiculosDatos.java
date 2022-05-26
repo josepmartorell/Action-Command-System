@@ -314,7 +314,10 @@ public class VehiculosDatos {
         try {    
                 String sql = "UPDATE vehiculos SET ";
                 switch(vehiculo.getColumnaActualizada())
-                {  case 1: sql += "modelo = ?"; 
+                {  
+                   case 0: sql += "id_vehiculo = ?"; 
+                           break; 
+                   case 1: sql += "modelo = ?"; 
                            break;
                    case 2: sql += "categoria = ?";
                            break;                       
@@ -331,7 +334,9 @@ public class VehiculosDatos {
                 preparedStatement = connection.prepareStatement(sql);   
 
                 switch(vehiculo.getColumnaActualizada())
-                {  case 1: preparedStatement.setString(1, (String)vehiculo.getDatoActualizado());
+                {  case 0: preparedStatement.setString(1, (String)vehiculo.getDatoActualizado());
+                           break;
+                   case 1: preparedStatement.setString(1, (String)vehiculo.getDatoActualizado());
                            break;
                    case 2: preparedStatement.setString(1, (String)vehiculo.getDatoActualizado());
                            break;    

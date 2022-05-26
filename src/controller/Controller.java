@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
@@ -29,6 +30,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import model.Contexto;
 import view.Menu;
+import view.ModeloDatos;
 import view.PantallaOpcion;
 
 /**
@@ -98,8 +100,24 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
               case "nuevoVehiculo" :  
               case "aplicarCambios" :
               case "eliminarVehiculo" :
+              case "insertarFila" :       
+              case "cancelarInsercionFila" :    
+              case "guardarFilaInsertada" : 
+              case "eliminarFilaSeleccionada" :
                       centralizar(componenteFuente);                
-                      break;                     
+                      break; 
+              case "ordenarPorIdentificador" :
+                     pantallaOpcion.setComponentesJPanel(1, 10);
+                     centralizar("reordenar");
+                     break;                    
+              case "ordenarPorModelo" :   
+                     pantallaOpcion.setComponentesJPanel(2, 10);
+                     centralizar("reordenar");                  
+                     break;                     
+              case "ordenarPorCategoria" :
+                     pantallaOpcion.setComponentesJPanel(3, 10);
+                     centralizar("reordenar");                   
+                     break; 
                     
           }
 
@@ -210,7 +228,11 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
                      if (exception instanceof GenericaExcepcion)      
                      {
                         GenericaExcepcion genericaExcepcion = (GenericaExcepcion)exception;
-                        /**/
+                        if (genericaExcepcion.getCodigoError() <= 16)   //  CODIGOS DE ERROR DE GenericaExcepcion GENERADOS POR LOS METODOS filtrarFecha() O filtrarKilometrajeVehiculo() QUE IMPLICAN RESTAURAR A LA CELDA EL VALOR ANTERIOR
+                        {  
+                           ((ModeloDatos)pantallaOpcion.getComponentesJPanel(15)).getDatos()[((Integer)pantallaOpcion.getComponentesJPanel(13))][((Integer)pantallaOpcion.getComponentesJPanel(14))] = ((ModeloDatos)pantallaOpcion.getComponentesJPanel(15)).getCopiaReservaDato();
+                           ((JTable)pantallaOpcion.getComponentesJPanel(0)).repaint();
+                        }
 
                      }
                   }
