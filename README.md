@@ -1,2 +1,2 @@
-# Mechanical_Workshop_Manager
-Java SE project with Model-View-Controller (MVC) architecture for a scalable mechanical workshop manager using the NetBeans wizard and a MySQL database.
+# Action_Command_System
+Java SE project with Model-View-Controller (MVC) architecture to exemplify the operation of the actionCommand system with the Swing framework.
